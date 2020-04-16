@@ -5,10 +5,10 @@ vid = None
 
 def processFrame(frame, n):
     return
-
-def openFile():
+    
+def openFile(file):
     global vid
-    vid = cv2.VideoCapture("data/read.MOV")
+    vid = cv2.VideoCapture(file)
 
 def readFile():
     success, frame = vid.read()
@@ -16,4 +16,8 @@ def readFile():
     while success:  
         processFrame(frame, frameIter)
         success, frame = vid.read()
+        frameIter += 1
 
+if __name__ == "__main__":
+    openFile("data/single.mov")
+    readFile()
