@@ -15,10 +15,9 @@ def processFrame(frame, n):
         for column in mask:
             x = 0
             for pixel in column:
+                # if the pixel has been selected by the mask, save the corresponding pixel from 
+                # the frame in data
                 if pixel == 255:
-                    print("pix")
-                    print(y," ", x)
-                    print(frame[y][x])
                     data[tube][n].append(frame[y][x])
                 x += 1
             y += 1
