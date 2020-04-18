@@ -38,6 +38,7 @@ def parse():
         processFrame(frame, frameIter)
         success, frame = vid.read()
         frameIter += 1
+    print("completed")
 
 if __name__ == "__main__":
     vidfile = "data/single.mov"
