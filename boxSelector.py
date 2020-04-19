@@ -41,6 +41,7 @@ def getMask(tb):
     p = Path(tb)
     mask = p.contains_points(points).reshape(frame.shape[0], frame.shape[1])
     mask = np.multiply(mask, 255).astype(np.uint8)
+    mask = np.stack((mask, mask, mask), -1)
 
     return mask
 
@@ -87,6 +88,8 @@ def selectTubes(file):
             
             # return the mask list
             cv2.destroyAllWindows()
+            masks = np.asarray(masks)
+            print("masks successfully generated!")
             return masks
 
 if __name__ == "__main__":
