@@ -1,21 +1,22 @@
 import numpy as np
 import cv2
+import threading
 
 vid = None
 masks = None
 data = None
 
+# At which percentage intervals does the program output the percentage to parsing completion
 PERCENT_NOTIFICATION = 2
 
 _notif = PERCENT_NOTIFICATION / 100
 
-def processFrame(frame):
+def processFrame(fr):
     global data
     dataList = []
     tube = 0
     # for every tube (mask) that exists...
     for mask in masks:
-        fr = frame.copy()
         fr = cv2.bitwise_and(fr, mask)
         fr = np.ma.masked_equal(fr, [0, 0, 0])
         fr = fr.compressed()
@@ -39,10 +40,18 @@ def parse():
 
     data = []
     while success:
+        
+        # append the data from the next frame to the data 
+        # data.append(processFrame(frame))
+        parseThread = threading.Thread(target=(lambda f, d: (d.append(processFrame(f)))), args=(frame.copy(), data))
+        parseThread.start()
+
         if ((len(data) / total) % _notif) < invTotal:
             print(int((len(data) * 100) / total), "% done!")
-        data.append(processFrame(frame))
         success, frame = vid.read()
+
+        parseThread.join()
+
     data = np.asarray(data)
     data = np.moveaxis(data, 0, 1)
     print("\n (tubes, frames)")
