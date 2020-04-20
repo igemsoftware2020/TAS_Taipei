@@ -3,9 +3,13 @@ import cv2
 
 vid = None
 masks = None
-data = []
+data = None
 
-def processFrame(frame, n):
+PERCENT_NOTIFICATION = 2
+
+_notif = PERCENT_NOTIFICATION / 100
+
+def processFrame(frame):
     global data
     dataList = []
     tube = 0
@@ -19,27 +23,31 @@ def processFrame(frame, n):
         #print(data.shape)
         dataList.append(fr)
         tube += 1
-    dataList = np.reshape(dataList, (-1, 1))
-    data = np.append(data, dataList, axis=1)
-    print(data.shape)
+    return dataList
 
 def setup(file, msks):
     global vid
     global masks
-    global data
     vid = cv2.VideoCapture(file)
     masks = msks
-    for m in masks:
-        data.append([None])
-    data = np.asarray(data)
 
 def parse():
+    global data
+    total = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
+    invTotal = 1 / total
     success, frame = vid.read()
-    frameIter = 0
-    while success:  
-        processFrame(frame, frameIter)
+
+    data = []
+    while success:
+        if ((len(data) / total) % _notif) < invTotal:
+            print(int((len(data) * 100) / total), "% done!")
+        data.append(processFrame(frame))
         success, frame = vid.read()
-        frameIter += 1
+    data = np.asarray(data)
+    data = np.moveaxis(data, 0, 1)
+    print("\n (tubes, frames)")
+    print(data.shape)
+
     print("video data successfully parsed and collected!")
 
 if __name__ == "__main__":
