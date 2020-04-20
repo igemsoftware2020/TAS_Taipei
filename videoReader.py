@@ -20,7 +20,7 @@ def processFrame(frame, n):
         dataList.append(fr)
         tube += 1
     dataList = np.reshape(dataList, (-1, 1))
-    data = np.append(data, np.asarray(dataList), axis=1)
+    data = np.append(data, dataList, axis=1)
     print(data.shape)
 
 def setup(file, msks):
