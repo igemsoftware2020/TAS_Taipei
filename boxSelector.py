@@ -29,17 +29,21 @@ def mouseEvent(event,x,y,flags,param):
                 point = 0
 
 def getMask(tb):
+    # if there are less than enough points, return false
     if len(tb) < POINTS:
         return False
-    maxCord = np.amax(tb, 0)
 
+    # create a grid that matches the resolution
     x, y = np.meshgrid(np.arange(frame.shape[1]), np.arange(frame.shape[0]))
     x, y = x.flatten(), y.flatten()
-    points = np.vstack((x,y)).T # make a grid 
+    points = np.vstack((x,y)).T
 
+    # find all of the points encircled by the polygon
     tb = np.asarray(tb)
     p = Path(tb)
     mask = p.contains_points(points).reshape(frame.shape[0], frame.shape[1])
+
+    # turn the points into a black and white mask
     mask = np.multiply(mask, 255).astype(np.uint8)
     mask = np.stack((mask, mask, mask), -1)
 
