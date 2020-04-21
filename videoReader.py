@@ -21,7 +21,7 @@ def processFrame(fr):
         fr = np.ma.masked_equal(fr, [0, 0, 0])
         fr = fr.compressed()
         fr = np.reshape(fr, (-1, 3))
-        #print(data.shape)
+        # print(data.shape)
         dataList.append(fr)
         tube += 1
     return dataList
