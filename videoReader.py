@@ -60,7 +60,7 @@ def parse():
     print("video data successfully parsed and collected!")
 
 if __name__ == "__main__":
-    vidfile = "data/single.mov"
+    vidfile = "4_20 C-19 Test 3_.mov"
 
     import boxSelector
     msks = boxSelector.selectTubes(vidfile)
