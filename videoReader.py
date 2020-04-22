@@ -6,7 +6,7 @@ vid = None
 masks = None
 data = None
 
-# At which percentage intervals does the program output the percentage to parsing completion
+# At which percentage intervals does the program output its percent completion
 PERCENT_NOTIFICATION = 2
 
 _notif = PERCENT_NOTIFICATION / 100
@@ -58,9 +58,12 @@ def parse():
     print(data.shape)
 
     print("video data successfully parsed and collected!")
+    np.save("last.npy", data)
+
+    return data
 
 if __name__ == "__main__":
-    vidfile = "data/single.mov"
+    vidfile = "data/wave.mp4"
 
     import boxSelector
     msks = boxSelector.selectTubes(vidfile)
