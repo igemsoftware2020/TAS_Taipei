@@ -3,7 +3,7 @@ import cv2
 import threading
 
 vid = None
-masks = None
+mask_indices = []
 data = None
 
 # At which percentage intervals does the program output its percent completion
@@ -12,25 +12,36 @@ PERCENT_NOTIFICATION = 2
 _notif = PERCENT_NOTIFICATION / 100
 
 def processFrame(fr):
-    global data
     dataList = []
     tube = 0
     # for every tube (mask) that exists...
-    for mask in masks:
-        fr = cv2.bitwise_and(fr, mask)
-        fr = np.ma.masked_equal(fr, [0, 0, 0])
-        fr = fr.compressed()
-        fr = np.reshape(fr, (-1, 3))
-        #print(data.shape)
+    for indices in mask_indices:
+        print("index", len(indices[0]))
+        print("before", fr.shape)
+        fr = fr[indices]
+        print("after", fr.shape)
+        #print(fr)
+        try:
+            fr = np.reshape(fr, (-1, 3))
+        except:
+            print(fr.shape)
+            print('indicies', indices[0].shape)
+            pass
+        #print(fr.shape)
+            
         dataList.append(fr)
         tube += 1
     return dataList
 
 def setup(file, msks):
     global vid
-    global masks
+    global mask_indices
     vid = cv2.VideoCapture(file)
     masks = msks
+    for mask in masks:
+        indices = np.nonzero(mask)
+        mask_indices.append(indices)
+
 
 def parse():
     global data
@@ -43,7 +54,9 @@ def parse():
         
         # append the data from the next frame to the data 
         # data.append(processFrame(frame))
-        parseThread = threading.Thread(target=(lambda f, d: (d.append(processFrame(f)))), args=(frame.copy(), data))
+        fr = frame.copy()
+        
+        parseThread = threading.Thread(target=(lambda f, d: (d.append(processFrame(f)))), args=(fr, data))
         parseThread.start()
 
         if ((len(data) / total) % _notif) < invTotal:
@@ -63,7 +76,7 @@ def parse():
     return data
 
 if __name__ == "__main__":
-    vidfile = "data/wave.mp4"
+    vidfile = "data/single.mov"
 
     import boxSelector
     msks = boxSelector.selectTubes(vidfile)
