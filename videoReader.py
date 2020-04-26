@@ -16,10 +16,7 @@ def processFrame(fr):
     tube = 0
     # for every tube (mask) that exists...
     for indices in mask_indices:
-        print("index", len(indices[0]))
-        print("before", fr.shape)
         fr = fr[indices]
-        print("after", fr.shape)
         #print(fr)
         try:
             fr = np.reshape(fr, (-1, 3))
@@ -67,7 +64,7 @@ def parse():
 
     data = np.asarray(data)
     data = np.moveaxis(data, 0, 1)
-    print("\n (tubes, frames)")
+    print("\n(tubes, frames, pixels, channels)")
     print(data.shape)
 
     print("video data successfully parsed and collected!")
