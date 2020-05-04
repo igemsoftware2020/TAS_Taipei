@@ -68,7 +68,7 @@ def parse():
     print(data.shape)
 
     print("video data successfully parsed and collected!")
-    np.save("last.npy", data)
+    np.save("latest.npy", data)
 
     return data
 

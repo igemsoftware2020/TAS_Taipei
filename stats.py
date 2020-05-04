@@ -37,13 +37,8 @@ def remove_outliers(data):
         new_data = data[tube][mask]
         new_data = np.reshape(new_data, (len(data), len(data[tube]), -1))
     return new_data 
-    
-if __name__ == "__main__":
-    da = np.load("last.npy")
-    da = convert_to_hue(da)
-    da = remove_outliers(da)
-    avg = average_over_axis(da)
 
+def genSideBar(avg):
     rnge = int(np.amax(avg[0])+5)
     print(rnge)
     h = (np.arange(rnge))#np.flip
@@ -52,13 +47,23 @@ if __name__ == "__main__":
     s = [255] * rnge
     v = [255] * rnge
     ref = np.stack((h, s, v), 1)
-    ref = np.asarray([ref] * 10, np.uint8)
+    ref = np.asarray([ref] * 30, np.uint8)
     ref = np.swapaxes(ref, 1, 0)
     ref = cv2.cvtColor(ref, cv2.COLOR_HSV2RGB)
+    return ref
+    
+if __name__ == "__main__":
+    da = np.load("latest.npy")
+    da = convert_to_hue(da)
+    da = remove_outliers(da)
+    avg = average_over_axis(da)
+
+    ref = genSideBar(avg)
 
     fig, ax = plt.subplots()
     x = np.arange(len(avg[0]))
     #ax.scatter(x, avg[0])
     plt.imshow(ref, origin='lower', aspect = 20)
+    print(x[-1])
     ax.plot(x, avg[0])
     plt.show()

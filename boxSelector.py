@@ -54,6 +54,8 @@ def selectTubes(file):
 
     # open the first frame from the video file
     vid = cv2.VideoCapture(file)
+    #for i in range(100):
+        #scc, frame = vid.read()
     scc, frame = vid.read()
     vid.release()
 
