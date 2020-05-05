@@ -2,16 +2,19 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-MAX_DEVIATION = 0.1
-OFFSET = 5
+MAX_DEVIATION = 1000#0.1
+OFFSET = 20
 
 def average_over_axis(data):
     data = np.mean(data, axis=-1)
+    print("ahah")
+    print(data - OFFSET)
     return data
     #np.reshape(data, (1, -1))
 
 def convert_to_hue(data):
     t = 0
+    print(len(data))
     for tube in data:
         tube = cv2.cvtColor(tube, cv2.COLOR_BGR2HSV)
         data[t] = tube
@@ -21,7 +24,7 @@ def convert_to_hue(data):
     #print(np.prod(data, axis=-1, ))
     data = np.squeeze(data, axis=-1)
     data = np.add(data, OFFSET)
-    data[data > 180] -= 180
+    data[data > 1795] -= 180
     return data    
 
 def remove_outliers(data):
@@ -39,8 +42,8 @@ def remove_outliers(data):
     return new_data 
 
 def genSideBar(avg):
-    rnge = int(np.amax(avg[0])+5)
-    print(rnge)
+    print(np.amax(avg[0]+OFFSET))
+    rnge = int(np.amax(avg[0])+OFFSET)
     h = (np.arange(rnge))#np.flip
     h -= OFFSET
     h[h<=0] += 180
@@ -63,7 +66,7 @@ if __name__ == "__main__":
     fig, ax = plt.subplots()
     x = np.arange(len(avg[0]))
     #ax.scatter(x, avg[0])
-    plt.imshow(ref, origin='lower', aspect = 20)
+    #plt.imshow(ref, origin='lower', aspect = 20)
     print(x[-1])
     ax.plot(x, avg[0])
     plt.show()

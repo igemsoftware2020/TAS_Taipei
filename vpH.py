@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import cv2
 import boxSelector as bS
 import videoReader as vR
@@ -16,20 +17,24 @@ DEFAULT_FILE = "data/default.mov"
 
 if __name__ == "__main__":
     vidfile = DEFAULT_FILE
-
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 1:
         if sys.argv[1] == "-p" or sys.argv[1] == "--process":
-            vidfile = sys.argv[2]
-
+            try:
+                vidfile = sys.argv[2]
+            except:
+                print("error")
+                exit()
             msks = bS.selectTubes(vidfile)
 
             vR.setup(vidfile, msks)
             vR.parse()
-            
+            data = np.load('latest.npy')
+
         if sys.argv[1] == "-r" or sys.argv[1] == "--read":
-            data = np.load(sys.argv[2])
-    else:
-        data = np.load('lastest.npy')
+            try:
+                data = np.load(sys.argv[2])
+            except:
+                data = np.load('latest.npy')
 
 
     da = stats.convert_to_hue(data)
@@ -41,6 +46,6 @@ if __name__ == "__main__":
     fig, ax = plt.subplots()
     x = np.arange(len(avg[0]))
     #ax.scatter(x, avg[0])
-    plt.imshow(ref, origin='lower', aspect = 20)
+    #plt.imshow(ref, origin='lower', aspect = 20)
     ax.plot(x, avg[0])
     plt.show()
