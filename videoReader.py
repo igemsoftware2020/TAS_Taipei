@@ -68,12 +68,12 @@ def parse():
     print(data.shape)
 
     print("video data successfully parsed and collected!")
-    np.save("last.npy", data)
+    np.save("NC.npy", data)
 
     return data
 
 if __name__ == "__main__":
-    vidfile = "data/single.mov"
+    vidfile = "First_Column.MP4"
 
     import boxSelector
     msks = boxSelector.selectTubes(vidfile)

@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-MAX_DEVIATION = 0.1
+MAX_DEVIATION = 1
 OFFSET = 5
 
 def average_over_axis(data):
@@ -39,12 +39,32 @@ def remove_outliers(data):
     return new_data 
     
 if __name__ == "__main__":
-    da = np.load("last.npy")
+    da = np.load("A1.npy")
     da = convert_to_hue(da)
     da = remove_outliers(da)
     avg = average_over_axis(da)
 
-    rnge = int(np.amax(avg[0])+5)
+    da2 = np.load("A2.npy")
+    da2 = convert_to_hue(da2)
+    da2 = remove_outliers(da2)
+    avg2 = average_over_axis(da2)
+
+    da3 = np.load("A3.npy")
+    da3 = convert_to_hue(da3)
+    da3 = remove_outliers(da3)
+    avg3 = average_over_axis(da3)
+
+    da4 = np.load("A5.npy")
+    da4 = convert_to_hue(da4)
+    da4 = remove_outliers(da4)
+    avg4 = average_over_axis(da4)
+
+    nc = np.load("NC.npy")
+    nc = convert_to_hue(nc)
+    nc = remove_outliers(nc)
+    avg5 = average_over_axis(nc)
+
+    rnge = int(np.amax(avg[0]) + 5)
     print(rnge)
     h = (np.arange(rnge))#np.flip
     h -= OFFSET
@@ -57,8 +77,16 @@ if __name__ == "__main__":
     ref = cv2.cvtColor(ref, cv2.COLOR_HSV2RGB)
 
     fig, ax = plt.subplots()
-    x = np.arange(len(avg[0]))
+    x = np.arange(len(avg[0])) * (61183/57360)
     #ax.scatter(x, avg[0])
     plt.imshow(ref, origin='lower', aspect = 20)
-    ax.plot(x, avg[0])
+    plt.ylabel("Hue")
+    plt.xlabel("Time (Minutes)")
+    ax.plot(x, avg[0], label = "A1")
+    ax.plot(x, avg2[0], label = "A2")
+    ax.plot(x, avg3[0], label = "A3")
+    ax.plot(x, avg4[0], label = "A5")
+    ax.plot(x, avg5[0], label = "Negative Control")
+    plt.legend(loc = 'lower right')
+    plt.xlim(0, 600)
     plt.show()

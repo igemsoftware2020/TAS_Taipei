@@ -7,6 +7,6 @@ import cv2
 #   vp
 
 if __name__ == "__main__":
-    data = np.load('last.npy')
+    data = np.load('A1.npy')
     print(data)
     print("g'day mate")
