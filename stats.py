@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+from matplotlib import figure
 
 MAX_DEVIATION = 1
 OFFSET = 5
@@ -37,7 +38,7 @@ def remove_outliers(data):
         new_data = data[tube][mask]
         new_data = np.reshape(new_data, (len(data), len(data[tube]), -1))
     return new_data 
-    
+
 if __name__ == "__main__":
     da = np.load("C1.npy")
     da = convert_to_hue(da)
@@ -64,7 +65,7 @@ if __name__ == "__main__":
     nc = remove_outliers(nc)
     avg5 = average_over_axis(nc)
 
-    rnge = int(np.amax(avg[0]) + 5)
+    '''rnge = int(np.amax(avg[0]) + 5)
     print(rnge)
     h = (np.arange(rnge))#np.flip
     h -= OFFSET
@@ -74,20 +75,21 @@ if __name__ == "__main__":
     ref = np.stack((h, s, v), 1)
     ref = np.asarray([ref] * 10, np.uint8)
     ref = np.swapaxes(ref, 1, 0)
-    ref = cv2.cvtColor(ref, cv2.COLOR_HSV2RGB)
+    ref = cv2.cvtColor(ref, cv2.COLOR_HSV2RGB)'''
 
     fig, ax = plt.subplots()
     x = np.arange(len(avg[0])) * (62399/56700)
     #ax.scatter(x, avg[0])
-    plt.imshow(ref, origin='lower', aspect = 20)
-    plt.ylabel("Hue")
+    # plt.imshow(ref, origin='lower', aspect = 20)
+    plt.ylabel("pH")
     plt.xlabel("Time (Minutes)")
-    ax.plot(x, avg[0], label = "C1")
-    ax.plot(x, avg2[0], label = "C3")
+    ax.plot(x, np.log(((1/avg[0])-0.100867)/0.00000572328)/1.32139, label = "C1")
+    '''ax.plot(x, avg2[0], label = "C3")
     ax.plot(x, avg3[0], label = "D2")
     ax.plot(x, avg4[0], label = "E1")
-    ax.plot(x, avg5[0], label = "Negative Control")
+    ax.plot(x, avg5[0], label = "Negative Control")'''
     plt.legend(loc = 'lower right')
-    plt.xlim(0, 1000)
-    plt.xticks(np.arange(min(x), max(x), 100))
+    plt.tight_layout()
+    # plt.xlim(0, max)
+    # plt.xticks(np.arange(min(x), max(x), 100))
     plt.show()
