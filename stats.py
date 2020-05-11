@@ -83,7 +83,7 @@ if __name__ == "__main__":
     # plt.imshow(ref, origin='lower', aspect = 20)
     plt.ylabel("pH")
     plt.xlabel("Time (Minutes)")
-    ax.plot(x, np.log(((1/avg[0])-0.100867)/0.00000572328)/1.32139, label = "C1")
+    ax.plot(x, np.log(((5/avg[0])-0.100867)/0.00000572328)/1.32139, label = "C1")
     '''ax.plot(x, avg2[0], label = "C3")
     ax.plot(x, avg3[0], label = "D2")
     ax.plot(x, avg4[0], label = "E1")
