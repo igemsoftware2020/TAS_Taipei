@@ -40,22 +40,22 @@ def remove_outliers(data):
     return new_data 
 
 if __name__ == "__main__":
-    da = np.load("C1.npy")
+    da = np.load("A1.npy")
     da = convert_to_hue(da)
     da = remove_outliers(da)
     avg = average_over_axis(da)
 
-    da2 = np.load("C3.npy")
+    da2 = np.load("A2.npy")
     da2 = convert_to_hue(da2)
     da2 = remove_outliers(da2)
     avg2 = average_over_axis(da2)
 
-    da3 = np.load("D2.npy")
+    da3 = np.load("A3.npy")
     da3 = convert_to_hue(da3)
     da3 = remove_outliers(da3)
     avg3 = average_over_axis(da3)
 
-    da4 = np.load("E1.npy")
+    da4 = np.load("A5.npy")
     da4 = convert_to_hue(da4)
     da4 = remove_outliers(da4)
     avg4 = average_over_axis(da4)
@@ -83,12 +83,12 @@ if __name__ == "__main__":
     # plt.imshow(ref, origin='lower', aspect = 20)
     plt.ylabel("pH")
     plt.xlabel("Time (Minutes)")
-    ax.plot(x, np.log(((5/avg[0])-0.100867)/0.00000572328)/1.32139, label = "C1")
-    '''ax.plot(x, avg2[0], label = "C3")
-    ax.plot(x, avg3[0], label = "D2")
-    ax.plot(x, avg4[0], label = "E1")
-    ax.plot(x, avg5[0], label = "Negative Control")'''
-    plt.legend(loc = 'lower right')
+    ax.plot(x, np.log(((5/avg[0])-0.100867)/0.00000572328)/1.32139, label = "A1")
+    ax.plot(x, np.log(((5/avg2[0])-0.100867)/0.00000572328)/1.32139, label = "C3")
+    ax.plot(x, np.log(((5/avg3[0])-0.100867)/0.00000572328)/1.32139, label = "D2")
+    ax.plot(x, np.log(((5/avg4[0])-0.100867)/0.00000572328)/1.32139, label = "E1")
+    ax.plot(x, np.log(((5/avg5[0])-0.100867)/0.00000572328)/1.32139, label = "Negative Control")
+    plt.legend(loc = 'upper right')
     plt.tight_layout()
     # plt.xlim(0, max)
     # plt.xticks(np.arange(min(x), max(x), 100))

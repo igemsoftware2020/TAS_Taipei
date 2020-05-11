@@ -73,7 +73,7 @@ def parse():
     return data
 
 if __name__ == "__main__":
-    vidfile = "Third_Test.MOV"
+    vidfile = "First_Column.mp4"
 
     import boxSelector
     msks = boxSelector.selectTubes(vidfile)
