@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import figure
 
 MAX_DEVIATION = 1
-OFFSET = 5
+OFFSET = 20
 
 def average_over_axis(data):
     data = np.mean(data, axis=-1)
