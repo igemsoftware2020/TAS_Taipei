@@ -11,4 +11,8 @@ VisualpH is a python script that utilizes the openCV api to analyze photos and v
 
 The location of each tube is first selected by the user, and the software then collects the values of those pixels at every frame in the video. The RGB data is converted into HSV, but only the hue data is used. 
 
-Depending on the 
+The hue can be converted to pH using the following equation where *pH* is the pH, *h* is hue, and *a*, *b*, *c* are constants. 
+
+![alt text](equation.png)
+
+Using this equation, we can get a model of the advancement of the reaction over time. 
