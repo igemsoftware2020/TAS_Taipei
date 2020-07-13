@@ -2,19 +2,17 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-MAX_DEVIATION = 1000#0.1
-OFFSET = 20
+MAX_DEVIATION = 1000 # 0.1
+OFFSET = 20 # Adjust the offset to tune for specific indicators
+# A vector offset would be more universal, but a constant offset is good enough for phenol red
 
 def average_over_axis(data):
     data = np.mean(data, axis=-1)
-    print("ahah")
-    print(data - OFFSET)
     return data
     #np.reshape(data, (1, -1))
 
 def convert_to_hue(data):
     t = 0
-    print(len(data))
     for tube in data:
         tube = cv2.cvtColor(tube, cv2.COLOR_BGR2HSV)
         data[t] = tube
@@ -24,7 +22,7 @@ def convert_to_hue(data):
     #print(np.prod(data, axis=-1, ))
     data = np.squeeze(data, axis=-1)
     data = np.add(data, OFFSET)
-    data[data > 1795] -= 180
+    data[data >= 180] -= 180
     return data    
 
 def remove_outliers(data):
@@ -42,8 +40,7 @@ def remove_outliers(data):
     return new_data 
 
 def genSideBar(avg):
-    print(np.amax(avg[0]+OFFSET))
-    rnge = int(np.amax(avg[0])+OFFSET)
+    rnge = int(np.amax(avg[0])+5) # 5 is an arbitrary constant just to make the graph look nicer
     h = (np.arange(rnge))#np.flip
     h -= OFFSET
     h[h<=0] += 180
@@ -54,19 +51,27 @@ def genSideBar(avg):
     ref = np.swapaxes(ref, 1, 0)
     ref = cv2.cvtColor(ref, cv2.COLOR_HSV2RGB)
     return ref
-    
+
+def hueTopH(hue):
+    hue = hue / 5
+    conversion = np.reciprocal(hue)
+    conversion = conversion * 163864
+    conversion = conversion - 16635.6
+    conversion = np.log(conversion)
+    pH = conversion * 0.768933
+    return pH
+
 if __name__ == "__main__":
     da = np.load("latest.npy")
     da = convert_to_hue(da)
     da = remove_outliers(da)
     avg = average_over_axis(da)
 
-    ref = genSideBar(avg)
 
-    fig, ax = plt.subplots()
     x = np.arange(len(avg[0]))
+    fig, ax = plt.subplots()
     #ax.scatter(x, avg[0])
-    #plt.imshow(ref, origin='lower', aspect = 20)
-    print(x[-1])
+    ref = genSideBar(avg)
+    plt.imshow(ref, origin='lower', aspect = 20)
     ax.plot(x, avg[0])
     plt.show()

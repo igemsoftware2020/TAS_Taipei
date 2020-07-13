@@ -61,6 +61,7 @@ def parse():
         success, frame = vid.read()
 
         parseThread.join()
+    print("100% done!")
 
     data = np.asarray(data)
     data = np.moveaxis(data, 0, 1)
@@ -73,7 +74,7 @@ def parse():
     return data
 
 if __name__ == "__main__":
-    vidfile = "data/single.mov"
+    vidfile = "data/def.mov"
 
     import boxSelector
     msks = boxSelector.selectTubes(vidfile)
