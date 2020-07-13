@@ -16,8 +16,9 @@ OFFSET = 5
 DEFAULT_FILE = "data/default.mov"
 
 if __name__ == "__main__":
-    vidfile = DEFAULT_FILE
-    if len(sys.argv) > 1:
+    vidfile = DEFAULT_FILE #default video file name
+
+    if len(sys.argv) > 1: #if there are arguments
         if sys.argv[1] == "-p" or sys.argv[1] == "--process":
             try:
                 vidfile = sys.argv[2]
@@ -40,12 +41,15 @@ if __name__ == "__main__":
     da = stats.convert_to_hue(data)
     da = stats.remove_outliers(da)
     avg = stats.average_over_axis(da)
+    mmf = stats.hueTopH(avg[0])
 
-    ref = stats.genSideBar(avg)
+    #ref = stats.genSideBar(avg)
 
     fig, ax = plt.subplots()
-    x = np.arange(len(avg[0]))
+    x = np.arange(len(mmf))
     #ax.scatter(x, avg[0])
     #plt.imshow(ref, origin='lower', aspect = 20)
-    ax.plot(x, avg[0])
+    ax.plot(x, mmf)
+    ax.set_ylabel("pH")
+    ax.set_title("pH change of the test over time")
     plt.show()
