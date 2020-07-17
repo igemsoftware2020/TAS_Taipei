@@ -40,7 +40,7 @@ def remove_outliers(data):
     return new_data 
 
 if __name__ == "__main__":
-    da = np.load("A1.npy")
+    da = np.load("latest.npy")
     da = convert_to_hue(da)
     da = remove_outliers(da)
     avg = average_over_axis(da)
@@ -83,13 +83,14 @@ if __name__ == "__main__":
     # plt.imshow(ref, origin='lower', aspect = 20)
     plt.ylabel("pH")
     plt.xlabel("Time (Minutes)")
-    ax.plot(x, np.log(((1/avg[0])-0.0201733)/0.00000114466)/1.32139, label = "A1")
+    ax.plot(x, np.log(((1/avg[0])-0.0201733)/0.00000114466)/1.32139, label = "C19")
     '''ax.plot(x, np.log(((1/avg2[0])-0.0201733)/0.00000114466)/1.32139, label = "A2")
     ax.plot(x, np.log(((1/avg3[0])-0.0201733)/0.00000114466)/1.32139, label = "A3")
-    ax.plot(x, np.log(((1/avg4[0])-0.0201733)/0.00000114466)/1.32139, label = "A5")
-    ax.plot(x, np.log(((1/avg5[0])-0.0201733)/0.00000114466)/1.32139, label = "Negative Control")'''
+    ax.plot(x, np.log(((1/avg4[0])-0.0201733)/0.00000114466)/1.32139, label = "A5")'''
+    ax.plot(x, np.log(((1/avg5[0])-0.0201733)/0.00000114466)/1.32139, label = "Negative Control")
     plt.legend(loc = 'upper right')
     plt.tight_layout()
     # plt.xlim(0, max)
     # plt.xticks(np.arange(min(x), max(x), 100))
-    plt.show()
+    # plt.show()
+    np.savetxt('lol.csv', da, delimiter='.\n')
