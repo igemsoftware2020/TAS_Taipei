@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from matplotlib.path import Path
 
-POINTS = 4
+POINTS = 3
 
 # 3d array with shape (tubes, 4, 2)
 frame = None

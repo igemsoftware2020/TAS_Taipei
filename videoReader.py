@@ -7,7 +7,7 @@ mask_indices = []
 data = None
 
 # At which percentage intervals does the program output its percent completion
-PERCENT_NOTIFICATION = 2
+PERCENT_NOTIFICATION = 10
 
 _notif = PERCENT_NOTIFICATION / 100
 
@@ -69,12 +69,12 @@ def parse():
     print(data.shape)
 
     print("video data successfully parsed and collected!")
-    np.save("latest.npy", data)
+    np.save("166pm.npy", data)
 
     return data
 
 if __name__ == "__main__":
-    vidfile = "data/def.mov"
+    vidfile = "data/8-19-25um-0025um-25nm-166pm_cropped.mov"
 
     import boxSelector
     msks = boxSelector.selectTubes(vidfile)

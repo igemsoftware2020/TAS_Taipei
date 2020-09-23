@@ -75,3 +75,22 @@ if __name__ == "__main__":
     plt.imshow(ref, origin='lower', aspect = 20)
     ax.plot(x, avg[0])
     plt.show()
+
+'''
+x = np.arange(len(avg[0])) * (1290.67/606) # multiply by frame to time conversion ratio
+    fig, ax = plt.subplots()
+    # ax.scatter(x, avg[0])
+    # ref = genSideBar(avg)
+    # plt.imshow(ref, origin='lower', aspect = 20)
+    ax.plot(x, hueTopH(avg[0]), label = "nC19")
+    ax.plot(x, hueTopH(avg2[0]), label = "pC19")
+    ax.plot(x, hueTopH(navg[0]), label = "nNC")
+    ax.plot(x, hueTopH(navg2[0]), label = "pNC")
+    ax.plot(x, hueTopH(navg3[0]), label = "NC")
+    plt.ylabel("pH")
+    plt.xlabel("Time (Minutes)")
+    plt.legend(loc = 'upper right')
+    plt.tight_layout
+    plt.show()
+    # np.savetxt('7_28_C19_nM.csv', hueTopH(avg[0]), delimiter='.\n')
+'''
