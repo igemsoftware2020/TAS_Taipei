@@ -69,12 +69,12 @@ def parse():
     print(data.shape)
 
     print("video data successfully parsed and collected!")
-    np.save("166pm.npy", data)
+    np.save("166fM.npy", data)
 
     return data
 
 if __name__ == "__main__":
-    vidfile = "data/8-19-25um-0025um-25nm-166pm_cropped.mov"
+    vidfile = "data/9-4-166pm-0166pm-00166pm-166fm-166am_cropped.mov"
 
     import boxSelector
     msks = boxSelector.selectTubes(vidfile)

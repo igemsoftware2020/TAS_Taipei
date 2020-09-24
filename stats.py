@@ -53,44 +53,52 @@ def genSideBar(avg):
     return ref
 
 def hueTopH(hue):
-    hue = hue / 5
+    #hue = hue / 5
     conversion = np.reciprocal(hue)
-    conversion = conversion * 163864
-    conversion = conversion - 16635.6
+    conversion = conversion - 0.0201733
+    conversion = conversion / 0.00000114466
     conversion = np.log(conversion)
-    pH = conversion * 0.768933
+    pH = conversion / 1.32139
     return pH
 
 if __name__ == "__main__":
-    da = np.load("latest.npy")
+    da = np.load("166fm.npy")
     da = convert_to_hue(da)
     da = remove_outliers(da)
     avg = average_over_axis(da)
 
+    '''da2 = np.load("0.0025um.npy")
+    da2 = convert_to_hue(da2)
+    da2 = remove_outliers(da2)
+    avg2 = average_over_axis(da2)
 
-    x = np.arange(len(avg[0]))
+    da3 = np.load("25nm.npy")
+    da3 = convert_to_hue(da3)
+    da3 = remove_outliers(da3)
+    avg3 = average_over_axis(da3)
+
+    da4 = np.load("166pm.npy")
+    da4 = convert_to_hue(da4)
+    da4 = remove_outliers(da4)
+    avg4 = average_over_axis(da4)'''
+
+
+    '''x = np.arange(len(avg[0])) * (4031.95/) # multiply by frame:time ratio
     fig, ax = plt.subplots()
     #ax.scatter(x, avg[0])
-    ref = genSideBar(avg)
-    plt.imshow(ref, origin='lower', aspect = 20)
-    ax.plot(x, avg[0])
-    plt.show()
+    #ref = genSideBar(avg)
+    #plt.imshow(ref, origin='lower', aspect = 20)
 
-'''
-x = np.arange(len(avg[0])) * (1290.67/606) # multiply by frame to time conversion ratio
-    fig, ax = plt.subplots()
-    # ax.scatter(x, avg[0])
-    # ref = genSideBar(avg)
-    # plt.imshow(ref, origin='lower', aspect = 20)
-    ax.plot(x, hueTopH(avg[0]), label = "nC19")
-    ax.plot(x, hueTopH(avg2[0]), label = "pC19")
-    ax.plot(x, hueTopH(navg[0]), label = "nNC")
-    ax.plot(x, hueTopH(navg2[0]), label = "pNC")
-    ax.plot(x, hueTopH(navg3[0]), label = "NC")
+    ax.plot(x, hueTopH(avg[0]), label = "25 um", color = "orange")
+    ax.plot(x, hueTopH(avg2[0]), label = "0.0025 um", color = "red")
+    ax.plot(x, hueTopH(avg3[0]), label = "25 nm", color = "purple")
+    ax.plot(x, hueTopH(avg[0]), label = "166pm", color = "blue")
+
     plt.ylabel("pH")
     plt.xlabel("Time (Minutes)")
     plt.legend(loc = 'upper right')
     plt.tight_layout
-    plt.show()
-    # np.savetxt('7_28_C19_nM.csv', hueTopH(avg[0]), delimiter='.\n')
-'''
+    plt.show()'''
+
+    np.savetxt('textdata/9_4_C19_166fm.csv', hueTopH(avg[0]), delimiter = '\n')
+    #print(hueTopH(avg[0]))
