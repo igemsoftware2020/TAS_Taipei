@@ -3,11 +3,11 @@ import cv2
 import threading
 
 vid = None
-mask_indices = []
+masks = []
 data = None
 
 # At which percentage intervals does the program output its percent completion
-PERCENT_NOTIFICATION = 2
+PERCENT_NOTIFICATION = 5
 
 _notif = PERCENT_NOTIFICATION / 100
 
@@ -15,32 +15,28 @@ def processFrame(fr):
     dataList = []
     tube = 0
     # for every tube (mask) that exists...
-    for indices in mask_indices:
-        fr = fr[indices]
-        #print(fr)
-        try:
-            fr = np.reshape(fr, (-1, 3))
-        except:
-            print(fr.shape)
-            print('indicies', indices[0].shape)
-            pass
-        #print(fr.shape)
-            
+    for mask in masks:
+        fr = cv2.bitwise_and(fr, mask)
+        fr = np.ma.masked_equal(fr, [0,0,0])
+        fr = fr.compressed()
+        fr = fr.reshape(-1,3)
         dataList.append(fr)
         tube += 1
+        #cv2.imshow("aa", mask)
+        #cv2.waitKey(0)
+        continue
     return dataList
 
 def setup(file, msks):
     global vid
-    global mask_indices
+    global masks
     vid = cv2.VideoCapture(file)
     masks = msks
-    for mask in masks:
-        indices = np.nonzero(mask)
-        mask_indices.append(indices)
-
 
 def parse():
+    parse('latest')
+
+def parse(st):
     global data
     total = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
     invTotal = 1 / total
@@ -48,14 +44,16 @@ def parse():
 
     data = []
     while success:
-        
+        ff = frame.copy()
         # append the data from the next frame to the data 
-        # data.append(processFrame(frame))
-        fr = frame.copy()
-        
-        parseThread = threading.Thread(target=(lambda f, d: (d.append(processFrame(f)))), args=(fr, data))
-        parseThread.start()
+        #data.append(processFrame(frame))
 
+        #data.append(processFrame(frame))
+        
+        parseThread = threading.Thread(target=(lambda f, d: 
+            (d.append(processFrame(f)))), args=(ff, data))
+        parseThread.start()
+        
         if ((len(data) / total) % _notif) < invTotal:
             print(int((len(data) * 100) / total), "% done!")
         success, frame = vid.read()
@@ -69,7 +67,8 @@ def parse():
     print(data.shape)
 
     print("video data successfully parsed and collected!")
-    np.save("latest.npy", data)
+    name = st + ".npy"
+    np.save(name, data)
 
     return data
 

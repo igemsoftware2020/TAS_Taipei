@@ -14,30 +14,66 @@ import sys
 MAX_DEVIATION = 0.1
 OFFSET = 5
 DEFAULT_FILE = "data/default.mov"
+CROP = 0
+global data
+global size
+global process
+global vidfile
+process = False
+size = 1
 
+
+def checkArgs(arg, ind):
+    global size
+    global process
+
+    if arg == "-p":
+        try:
+            global vidfile
+            vidfile = sys.argv[ind + 1]
+        except:
+            print("error")
+            exit()
+        process = True
+        
+
+    if arg == "-r":
+        try:
+            data = np.load(sys.argv[ind + 1])
+        except:
+            data = np.load('latest.npy') 
+            print("error")
+            exit()
+
+    if arg == "-sm":
+        try:
+            size = float(sys.argv[ind+1])
+        except:
+            size = 1 
+            print("error")
+            exit()
+      
 if __name__ == "__main__":
+    global data
+    global vidfile
     vidfile = DEFAULT_FILE #default video file name
 
-    if len(sys.argv) > 1: #if there are arguments
-        if sys.argv[1] == "-p" or sys.argv[1] == "--process":
-            try:
-                vidfile = sys.argv[2]
-            except:
-                print("error")
-                exit()
-            msks = bS.selectTubes(vidfile)
-
+    for argin in range(len(sys.argv)):
+        arg = sys.argv[argin]
+        if arg[0] == "-":
+            checkArgs(arg, argin)
+    
+    if process:
+        print(vidfile)
+        msks = bS.selectTubes(vidfile, size)
+        x = 0
+        data = []
+        for msk in msks:
             vR.setup(vidfile, msks)
-            vR.parse()
-            data = np.load('latest.npy')
-
-        if sys.argv[1] == "-r" or sys.argv[1] == "--read":
-            try:
-                data = np.load(sys.argv[2])
-            except:
-                data = np.load('latest.npy')
-
-
+            vR.parse(str(x))
+            data.append( np.load(str(x)+'.npy'))
+            x+=1
+        data = np.asarray(data)
     da = stats.convert_to_hue(data)
     da = stats.remove_outliers(da)
     avg = stats.average_over_axis(da)
@@ -50,6 +86,8 @@ if __name__ == "__main__":
     #ax.scatter(x, avg[0])
     #plt.imshow(ref, origin='lower', aspect = 20)
     ax.plot(x, mmf)
+    np.save(mmf, '1.npy')
     ax.set_ylabel("pH")
-    ax.set_title("pH change of the test over time")
+    ax.set_title("pH change over time")
     plt.show()
+    # avg has become an equation of [H+] over time
