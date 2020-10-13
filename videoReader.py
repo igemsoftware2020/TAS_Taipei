@@ -40,7 +40,7 @@ def setup(file, msks):
         mask_indices.append(indices)
 
 
-def parse():
+def parse(name):
     global data
     total = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
     invTotal = 1 / total
@@ -69,7 +69,7 @@ def parse():
     print(data.shape)
 
     print("video data successfully parsed and collected!")
-    np.save("latest.npy", data)
+    np.save(name+".npy", data)
 
     return data
 

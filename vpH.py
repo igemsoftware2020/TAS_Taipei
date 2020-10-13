@@ -69,12 +69,13 @@ if __name__ == "__main__":
         x = 0
         data = []
         for msk in msks:
-            vR.setup(vidfile, msks)
+            vR.setup(vidfile, np.asarray([msk]))
             vR.parse(str(x))
             data.append( np.load(str(x)+'.npy'))
             x+=1
         data = np.asarray(data)
-    da = stats.convert_to_hue(data)
+
+    da = stats.convert_to_hue(data[0])
     da = stats.remove_outliers(da)
     avg = stats.average_over_axis(da)
     mmf = stats.hueTopH(avg[0])
@@ -86,7 +87,6 @@ if __name__ == "__main__":
     #ax.scatter(x, avg[0])
     #plt.imshow(ref, origin='lower', aspect = 20)
     ax.plot(x, mmf)
-    np.save(mmf, '1.npy')
     ax.set_ylabel("pH")
     ax.set_title("pH change over time")
     plt.show()
