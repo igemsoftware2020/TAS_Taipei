@@ -14,7 +14,6 @@ def average_over_axis(data):
 def convert_to_hue(data):
     t = 0
     for tube in data:
-        print(tube.shape)
         tube = cv2.cvtColor(tube, cv2.COLOR_BGR2HSV)
         data[t] = tube
         t+=1

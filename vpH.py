@@ -19,9 +19,10 @@ global data
 global size
 global process
 global vidfile
+global x
 process = False
 size = 1
-x = 0
+x = None
 
 
 def checkArgs(arg, ind):
@@ -40,7 +41,8 @@ def checkArgs(arg, ind):
 
     if arg == "-r":
         try:
-            data = np.load(sys.argv[ind + 1])
+            global data
+            data = np.load(sys.argv[ind+1])
         except:
             print("error")
             exit()
@@ -55,10 +57,18 @@ def checkArgs(arg, ind):
 
     if arg == "-m":
         try:
-            x = int(sys.argv[ind])
+            global x
+            x = int(sys.argv[ind+1])
         except:
             print("error")
             exit()
+
+def compile(data):    
+    da = stats.convert_to_hue(data)
+    da = stats.remove_outliers(da)
+    avg = stats.average_over_axis(da)
+    mmf = stats.hueTopH(avg[0])
+    return mmf
       
 if __name__ == "__main__":
     global data
@@ -81,23 +91,18 @@ if __name__ == "__main__":
 
 
     fig, ax = plt.subplots()
-    for i in range(x):
-        name = str(i)+'.npy'
-        data = np.load(name)
-        print(data.shape)
-
-        da = stats.convert_to_hue(data)
-        da = stats.remove_outliers(da)
-        avg = stats.average_over_axis(da)
-        mmf = stats.hueTopH(avg[0])
-
-        #ref = stats.genSideBar(avg)
-
-        x = np.arange(len(mmf))
-        #ax.scatter(x, avg[0])
-        #plt.imshow(ref, origin='lower', aspect = 20)
-        ax.plot(x, mmf)
+    if type(x) == int:
+        for i in range(x):
+            name = str(i)+'.npy'
+            data = np.load(name)
+            mmf = compile(data)
+            x = np.arange(len(mmf))
+            ax.plot(x, mmf)
+    else:
+        mmf=compile(data)
+        xset = np.arange(len(mmf))
+        ax.plot(xset, mmf)
     ax.set_ylabel("pH")
     ax.set_title("pH change over time")
+
     plt.show()
-    # avg has become an equation of [H+] over time
