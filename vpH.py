@@ -49,7 +49,7 @@ def checkArgs(arg, ind):
         try:
             size = float(sys.argv[ind+1])
         except:
-            size = 1 
+            size = 1
             print("error")
             exit()
       
@@ -67,26 +67,26 @@ if __name__ == "__main__":
         print(vidfile)
         msks = bS.selectTubes(vidfile, size)
         x = 0
-        data = []
         for msk in msks:
-            vR.setup(vidfile, np.asarray([msk]))
+            vR.setup(vidfile, np.asarray(msk))
             vR.parse(str(x))
-            data.append( np.load(str(x)+'.npy'))
             x+=1
-        data = np.asarray(data)
 
-    da = stats.convert_to_hue(data[0])
-    da = stats.remove_outliers(da)
-    avg = stats.average_over_axis(da)
-    mmf = stats.hueTopH(avg[0])
+    for i in range(x):
+        name = str(i)+'.npy'
 
-    #ref = stats.genSideBar(avg)
+        da = stats.convert_to_hue(data[0])
+        da = stats.remove_outliers(da)
+        avg = stats.average_over_axis(da)
+        mmf = stats.hueTopH(avg[0])
 
-    fig, ax = plt.subplots()
-    x = np.arange(len(mmf))
-    #ax.scatter(x, avg[0])
-    #plt.imshow(ref, origin='lower', aspect = 20)
-    ax.plot(x, mmf)
+        #ref = stats.genSideBar(avg)
+
+        fig, ax = plt.subplots()
+        x = np.arange(len(mmf))
+        #ax.scatter(x, avg[0])
+        #plt.imshow(ref, origin='lower', aspect = 20)
+        ax.plot(x, mmf)
     ax.set_ylabel("pH")
     ax.set_title("pH change over time")
     plt.show()

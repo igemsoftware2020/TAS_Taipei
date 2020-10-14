@@ -17,7 +17,9 @@ def processFrame(fr):
     # for every tube (mask) that exists...
     for indices in mask_indices:
         fr = fr[indices]
-        #print(fr)
+        print('fr')
+        print(indices)
+        print(fr.shape)
         try:
             fr = np.reshape(fr, (-1, 3))
         except:
@@ -30,26 +32,29 @@ def processFrame(fr):
         tube += 1
     return dataList
 
-def setup(file, msks):
+def setup(file, msk):
     global vid
     global mask_indices
     vid = cv2.VideoCapture(file)
-    masks = msks
-    for mask in masks:
-        indices = np.nonzero(mask)
-        mask_indices.append(indices)
+    vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
+    indices = np.nonzero(msk)
+    mask_indices = []
+    mask_indices.append(indices)
 
 
 def parse(name):
     global data
+    data = None
     total = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
     invTotal = 1 / total
+    vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
     success, frame = vid.read()
 
     data = []
     while success:
         
-        # append the data from the next frame to the data 
+        # append the da
+        # ta from the next frame to the data 
         # data.append(processFrame(frame))
         fr = frame.copy()
         
@@ -59,8 +64,11 @@ def parse(name):
         if ((len(data) / total) % _notif) < invTotal:
             print(int((len(data) * 100) / total), "% done!")
         success, frame = vid.read()
+        if success:
+            print(frame.shape)
 
         parseThread.join()
+    vid.release()
     print("100% done!")
 
     data = np.asarray(data)
@@ -71,6 +79,7 @@ def parse(name):
     print("video data successfully parsed and collected!")
     np.save(name+".npy", data)
 
+    
     return data
 
 if __name__ == "__main__":

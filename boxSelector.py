@@ -110,13 +110,13 @@ def selectTubes(file, insize):
             # for each box drawn, make a mask and append it to the list. Ignore if incomplete
             for tb in boxes:
                 mask = getMask(tb, original)
+                mask = np.asarray(mask)
                 if isinstance(mask, bool) == True:
                     return masks
                 masks.append(mask)
             
             # return the mask list
             cv2.destroyAllWindows()
-            masks = np.asarray(masks)
             print("masks successfully generated!")
             
             '''
