@@ -12,7 +12,11 @@ to install the dependencies.
 
 Use the following command:
 
+linux
 > python3 vpH.py -p 'filename.py'
+
+windows
+> python vpH.py -p 'filename.py'
 
 and it will bring up a window to select the tubes to process
 
@@ -28,7 +32,11 @@ make sure you rename these files before processing the next video if you want to
 
 The following command can be used for data files that have already been processed
 
+linux
 > python3 vpH.py -r 'filename.npy'
+
+windows
+> python vpH.py -r 'filename.npy'
 
 If you have a set of data files you want to display on a graph, use the following argument
 where x is an integer above 1
@@ -39,7 +47,5 @@ x will denote the number of files to process, starting from 0 to x-1
 
 ## Windows
 
-The above applies, but use the 
+The above applies, but instead of using the command python3 use
 > python 
-command rather than 
-> python3
