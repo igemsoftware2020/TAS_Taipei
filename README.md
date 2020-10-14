@@ -1,6 +1,13 @@
 
 # How to Use VisualpH
 
+## python
+make sure you have installed python 3, and that pip is properly working. Once that is done, run
+
+> pip install -r requirements.txt
+
+to install the dependencies.
+
 ## Parsing a new video
 
 Use the following command:
@@ -16,7 +23,9 @@ the following argument can be added to the end of the command to shrink the size
 The process command will automatically save the data files in /data/, with the names 0, 1, 2, 3 ...
 
 make sure you rename these files before processing the next video if you want to save them
-s
+
+## Displaying parsed data
+
 The following command can be used for data files that have already been processed
 
 > python3 vpH.py -r 'filename.npy'
