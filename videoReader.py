@@ -7,7 +7,7 @@ mask_indices = []
 data = None
 
 # At which percentage intervals does the program output its percent completion
-PERCENT_NOTIFICATION = 2
+PERCENT_NOTIFICATION = 10
 
 _notif = PERCENT_NOTIFICATION / 100
 
@@ -32,6 +32,8 @@ def processFrame(fr):
 def setup(file, msk):
     global vid
     global mask_indices
+
+    # saves and resets the global variables to begin processing
     vid = cv2.VideoCapture(file)
     vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
     indices = np.nonzero(msk)
@@ -42,6 +44,8 @@ def setup(file, msk):
 def parse(name):
     global data
     data = None
+
+    # count the total frames to give completion estimates
     total = int(vid.get(cv2.CAP_PROP_FRAME_COUNT))
     invTotal = 1 / total
     vid.set(cv2.CAP_PROP_POS_FRAMES, 0)

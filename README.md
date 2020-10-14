@@ -28,3 +28,9 @@ where x is an integer above 1
 
 x will denote the number of files to process, starting from 0 to x-1
 
+## Windows
+
+The above applies, but use the 
+> python 
+command rather than 
+> python3

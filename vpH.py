@@ -85,6 +85,7 @@ if __name__ == "__main__":
         msks = bS.selectTubes(vidfile, size)
         x = 0
         for msk in msks:
+            print('processing tube number' + str(x+1))
             vR.setup(vidfile, np.asarray(msk))
             vR.parse(str(x))
             x+=1

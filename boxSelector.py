@@ -58,7 +58,9 @@ def getMask(tb, frameOriginal):
 
 def renderLines():
     global frame
-    
+
+    # draws lines between the current points on the most recent box
+
     if point < 2: return
 
     ppt = box[-2]
