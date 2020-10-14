@@ -37,7 +37,14 @@ def checkArgs(arg, ind):
             print("error")
             exit()
         process = True
-        
+
+    if arg == "-pp":
+        try:
+            bS.setPoints(int(sys.argv[ind+1]))
+        except:
+            print("error")
+            exit()
+        process = True        
 
     if arg == "-r":
         try:

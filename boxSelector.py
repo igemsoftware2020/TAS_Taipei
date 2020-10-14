@@ -13,6 +13,10 @@ point = 0
 size = 1
 highlightFrame = 100
 
+def setPoints(p):
+    global POINTS
+    POINTS = p
+
 def mouseEvent(event,x,y,flags,param):
     global boxes
     global box
@@ -89,8 +93,7 @@ def selectTubes(file, insize):
         scc, frame = vid.read()
     vid.release()
     original = frame
-    frame = cv2.resize(frame, (int(frame.shape[1]*size), 
-        int(frame.shape[0]*size)))
+    frame = cv2.resize(frame, (int(frame.shape[1]*size), int(frame.shape[0]*size)))
 
     # add mouselistener
     cv2.namedWindow('highlight frame')
