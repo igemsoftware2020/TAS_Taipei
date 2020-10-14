@@ -74,6 +74,7 @@ if __name__ == "__main__":
 
     for i in range(x):
         name = str(i)+'.npy'
+        data = np.load(name)
 
         da = stats.convert_to_hue(data[0])
         da = stats.remove_outliers(da)
