@@ -70,7 +70,7 @@ def parse(name):
     data = np.moveaxis(data, 0, 1)
 
     print("video data successfully parsed and collected!")
-    np.save(name+".npy", data)
+    np.save("data/"+name+".npy", data)
 
     
     return data
