@@ -17,9 +17,6 @@ def processFrame(fr):
     # for every tube (mask) that exists...
     for indices in mask_indices:
         fr = fr[indices]
-        print('fr')
-        print(indices)
-        print(fr.shape)
         try:
             fr = np.reshape(fr, (-1, 3))
         except:
@@ -64,8 +61,6 @@ def parse(name):
         if ((len(data) / total) % _notif) < invTotal:
             print(int((len(data) * 100) / total), "% done!")
         success, frame = vid.read()
-        if success:
-            print(frame.shape)
 
         parseThread.join()
     vid.release()
@@ -73,8 +68,6 @@ def parse(name):
 
     data = np.asarray(data)
     data = np.moveaxis(data, 0, 1)
-    print("\n(tubes, frames, pixels, channels)")
-    print(data.shape)
 
     print("video data successfully parsed and collected!")
     np.save(name+".npy", data)

@@ -21,6 +21,7 @@ global process
 global vidfile
 process = False
 size = 1
+x = 0
 
 
 def checkArgs(arg, ind):
@@ -41,7 +42,6 @@ def checkArgs(arg, ind):
         try:
             data = np.load(sys.argv[ind + 1])
         except:
-            data = np.load('latest.npy') 
             print("error")
             exit()
 
@@ -50,6 +50,13 @@ def checkArgs(arg, ind):
             size = float(sys.argv[ind+1])
         except:
             size = 1
+            print("error")
+            exit()
+
+    if arg == "-m":
+        try:
+            x = int(sys.argv[ind])
+        except:
             print("error")
             exit()
       
@@ -72,18 +79,20 @@ if __name__ == "__main__":
             vR.parse(str(x))
             x+=1
 
+
+    fig, ax = plt.subplots()
     for i in range(x):
         name = str(i)+'.npy'
         data = np.load(name)
+        print(data.shape)
 
-        da = stats.convert_to_hue(data[0])
+        da = stats.convert_to_hue(data)
         da = stats.remove_outliers(da)
         avg = stats.average_over_axis(da)
         mmf = stats.hueTopH(avg[0])
 
         #ref = stats.genSideBar(avg)
 
-        fig, ax = plt.subplots()
         x = np.arange(len(mmf))
         #ax.scatter(x, avg[0])
         #plt.imshow(ref, origin='lower', aspect = 20)
