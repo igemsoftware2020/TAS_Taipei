@@ -105,7 +105,8 @@ if __name__ == "__main__":
             data = np.load(name)
             mmf = compile(data)
             x = np.arange(len(mmf))
-            ax.plot(x, mmf)
+            ax.plot(x, mmf, label=str(i))
+            ax.legend()
     else:
         mmf=compile(data)
         xset = np.arange(len(mmf))
